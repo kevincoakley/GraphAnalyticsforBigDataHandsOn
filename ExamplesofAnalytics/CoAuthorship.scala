@@ -140,7 +140,6 @@ for ((id, _) <- coAuthorshipGraph.vertices.collect()) {
 }
 
 // Load the graphX edges into GraphStream edges
-//for (Edge(x, y, _) <- coAuthorshipGraph.edges.collect()) {
 for ((Edge(x, y, _), count) <- coAuthorshipGraph.edges.collect().zipWithIndex) {
   graph.addEdge(count.toString, x.toString, y.toString).asInstanceOf[AbstractEdge]
 }
