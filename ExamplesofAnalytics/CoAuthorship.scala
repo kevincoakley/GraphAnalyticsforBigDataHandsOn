@@ -147,3 +147,31 @@ for ((Edge(x, y, _), count) <- coAuthorshipGraph.edges.collect().zipWithIndex) {
 
 // Display the graph.
 graph.display()
+
+
+
+//
+// Single Source Shortest Path
+//
+
+val sourceId: VertexId = 0 // The ultimate source
+
+// Initialize the graph such that all vertices except the root have distance infinity.
+val initialGraph : Graph[(Double, List[VertexId]), Int] = coAuthorshipGraph.mapVertices((id, _) => if (id == sourceId) (0.0, List[VertexId](sourceId)) else (Double.PositiveInfinity, List[VertexId]()))
+
+val singleSourceShortestPath = initialGraph.pregel((Double.PositiveInfinity, List[VertexId]()), Int.MaxValue, EdgeDirection.Out)(
+  // Vertex Program
+  (id, dist, newDist) => if (dist._1 < newDist._1) dist else newDist,
+
+  // Send Message
+  triplet => {
+    if (triplet.srcAttr._1 < triplet.dstAttr._1 - triplet.attr ) {
+      Iterator((triplet.dstId, (triplet.srcAttr._1 + triplet.attr , triplet.srcAttr._2 :+ triplet.dstId)))
+    } else {
+      Iterator.empty
+    }
+  },
+
+  //Merge Message
+  (a, b) => if (a._1 < b._1) a else b)
+    println(singleSourceShortestPath.vertices.collect.mkString("\n"))
