@@ -134,16 +134,42 @@ graph.addAttribute("ui.stylesheet","url(file:.//style/stylesheet-simple)")
 graph.addAttribute("ui.quality")
 graph.addAttribute("ui.antialias")
 
-// Given the coAuthorshipGraph, load the graphX vertices into GraphStream
+// Given the FacebookGraph, load the graphX vertices into GraphStream
 for ((id, _) <- FacebookGraph.vertices.collect()) {
   graph.addNode(id.toString).asInstanceOf[SingleNode]
 }
 
 // Load the graphX edges into GraphStream edges
-//for (Edge(x, y, _) <- coAuthorshipGraph.edges.collect()) {
 for ((Edge(x, y, _), count) <- FacebookGraph.edges.collect().zipWithIndex) {
   graph.addEdge(count.toString, x.toString, y.toString).asInstanceOf[AbstractEdge]
 }
 
 // Display the graph.
 graph.display()
+
+
+//
+// Single Source Shortest Path
+//
+
+val sourceId: VertexId = 0 // The ultimate source
+
+// Initialize the graph such that all vertices except the root have distance infinity.
+val initialGraph : Graph[(Double, List[VertexId]), Int] = FacebookGraph.mapVertices((id, _) => if (id == sourceId) (0.0, List[VertexId](sourceId)) else (Double.PositiveInfinity, List[VertexId]()))
+
+val singleSourceShortestPath = initialGraph.pregel((Double.PositiveInfinity, List[VertexId]()), Int.MaxValue, EdgeDirection.Out)(
+  // Vertex Program
+  (id, dist, newDist) => if (dist._1 < newDist._1) dist else newDist,
+
+  // Send Message
+  triplet => {
+    if (triplet.srcAttr._1 < triplet.dstAttr._1 - triplet.attr ) {
+      Iterator((triplet.dstId, (triplet.srcAttr._1 + triplet.attr , triplet.srcAttr._2 :+ triplet.dstId)))
+    } else {
+      Iterator.empty
+    }
+  },
+
+  //Merge Message
+  (a, b) => if (a._1 < b._1) a else b)
+    println(singleSourceShortestPath.vertices.collect.mkString("\n"))
