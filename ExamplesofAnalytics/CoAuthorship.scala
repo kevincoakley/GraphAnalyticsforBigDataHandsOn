@@ -174,3 +174,28 @@ val singleSourceShortestPath = initialGraph.pregel((Double.PositiveInfinity, Lis
   //Merge Message
   (a, b) => if (a._1 < b._1) a else b)
     println(singleSourceShortestPath.vertices.collect.mkString("\n"))
+
+
+//
+// Connected Components
+//
+
+val cc = coAuthorshipGraph.connectedComponents()
+
+// Find the number of connected components (1, everything is connected).
+cc.vertices.map(_._2).collect.distinct.length
+
+// Find the lowest VertexId in each component.
+cc.vertices.map(_._2).distinct.collect
+
+// Find the lowest VertexId in each component and the number of vertices in each component.
+cc.vertices.groupBy(_._2).map(p => (p._1,p._2.size)).sortBy(x => x._2).collect()
+
+// Find the largest component and print the number of vertices in that component.
+def largestComponent(cc: Graph[VertexId, Int]): (VertexId, Int) =
+  cc.vertices.map(x => (x._2,x._1)).
+    groupBy(_._1).
+    map(p => (p._1,p._2.size)).
+    max()(Ordering.by(_._2))
+
+largestComponent(cc)
