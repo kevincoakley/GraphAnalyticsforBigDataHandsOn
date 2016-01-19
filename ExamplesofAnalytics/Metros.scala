@@ -298,3 +298,44 @@ def largestComponent(cc: Graph[VertexId, Int]): (VertexId, Int) =
     max()(Ordering.by(_._2))
 
 largestComponent(cc)
+
+
+//
+// Community detection through label propagation (Label Propagation Algorithm)
+//
+
+// Initalize the graph by setting the label of each vertex to its identifier.
+val lpaGraph = countriesGraph.mapVertices { case (vid, _) => vid }
+
+// Start with an empty map then associate a community label to the number of neighbors that have the same label.
+val initialMessage = Map[VertexId, Long]()
+val maxSteps = 50
+
+// Using the Pregel programming model, each node will inform its neighbors of its current label using the sendMsg function.
+// The source node will receive the destination node's label, and vice versa for each Triplet.
+def sendMessage(e: EdgeTriplet[VertexId, Int]): Iterator[(VertexId, Map[VertexId, Long])] = {
+  Iterator((e.srcId, Map(e.dstAttr -> 1L)), (e.dstId, Map(e.srcAttr -> 1L)))
+}
+
+// A node determines its community label as the one to which the majority of its neighbors currently belong to.
+def vertexProgram(vid: VertexId, attr: Long, message: Map[VertexId, Long]): VertexId = {
+  if (message.isEmpty) attr else message.maxBy(_._2)._1
+}
+
+// Combine all the messages received by a node from its neighbors into a single map.
+// Sum the corresponding number of neighbors if both the messages contain the same label.
+def mergeMessage(count1: Map[VertexId, Long], count2: Map[VertexId, Long])
+: Map[VertexId, Long] = {
+  (count1.keySet ++ count2.keySet).map { i =>
+    val count1Val = count1.getOrElse(i, 0L)
+    val count2Val = count2.getOrElse(i, 0L)
+    i -> (count1Val + count2Val)
+  }.toMap
+}
+
+// Run the LPA algorithm by calling the Pregel method.
+Pregel(lpaGraph, initialMessage, maxIterations = maxSteps)(
+  vprog = vertexProgram,
+  sendMsg = sendMessage,
+  mergeMsg = mergeMessage)
+
