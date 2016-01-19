@@ -339,3 +339,12 @@ Pregel(lpaGraph, initialMessage, maxIterations = maxSteps)(
   sendMsg = sendMessage,
   mergeMsg = mergeMessage)
 
+
+//
+// Page Rank
+//
+
+// Run PageRank with an error tolerance of 0.0001
+val ranks = countriesGraph.pageRank(0.001).vertices
+// Find the top 10 Places (metros, countries or continents).
+val top10Places = ranks.sortBy(_._2, false).take(10)
