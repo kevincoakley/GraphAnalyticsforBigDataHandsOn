@@ -37,7 +37,7 @@ val flights: RDD[Edge[String]] = sc.parallelize(
 val flightGraph = Graph(airports, flights)
 
 
-flightGraph.triplets.foreach(t => println("Departs from: " + t.srcAttr + " Arrives at: " + t.dstAttr + " Flight Number: " + t.attr))
+flightGraph.triplets.foreach(t => println("Departs from: " + t.srcAttr + " - Arrives at: " + t.dstAttr + " - Flight Number: " + t.attr))
 
 
 flightGraph.vertices.foreach(println)
