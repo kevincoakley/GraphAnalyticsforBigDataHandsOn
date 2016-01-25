@@ -348,3 +348,38 @@ Pregel(lpaGraph, initialMessage, maxIterations = maxSteps)(
 val ranks = countriesGraph.pageRank(0.001).vertices
 // Find the top 10 Places (metros, countries or continents).
 val top10Places = ranks.sortBy(_._2, false).take(10)
+
+
+//
+// Triangle Count
+//
+
+
+val triangleGraph = countriesGraph.subgraph(epred = t => t.srcId < t.dstId).partitionBy(PartitionStrategy.RandomVertexCut)
+
+
+triangleGraph.triangleCount()
+val triangleCounts = triangleGraph.triangleCount().vertices
+
+
+def clusterCoeff(tup: (VertexId, (Int,Int))): (VertexId, Double) =
+  tup match {case (vid, (t, d)) =>
+    (vid, (2*t.toDouble/(d*(d-1))))
+  }
+
+def clusterCoefficients(graph: Graph[PlaceNode,Int]):
+RDD[(VertexId, Double)] = {
+  val gRDD: RDD[(VertexId, (Int, Int))] =
+    graph.triangleCount().vertices join graph.degrees
+  gRDD map clusterCoeff
+}
+
+
+val coeffs = clusterCoefficients(countriesGraph)
+coeffs.take(10)
+
+coeffs.filter (x => !x._2.isNaN).count
+
+val nonIsolatedNodes = coeffs.filter(x => !x._2.isNaN)
+val globalCoeff = nonIsolatedNodes.map(_._2).sum / nonIsolatedNodes.count
+
