@@ -173,40 +173,136 @@ output:
     (2,(Narita International Airport,Some(AirportInformation(Tokyo,NRT))))
 
 
-val flightOuterJoinedGraphTwo = flightGraph.outerJoinVertices(airportInformation)((_, name, airportInformation) => (name, airportInformation.getOrElse(AirportInformation("NA","NA"))))
-flightOuterJoinedGraphTwo.vertices.foreach(println)
+input:
 
+    val flightOuterJoinedGraphTwo = flightGraph.outerJoinVertices(airportInformation)((_, name, airportInformation) => (name, airportInformation.getOrElse(AirportInformation("NA","NA"))))
+    flightOuterJoinedGraphTwo.vertices.foreach(println)
 
-case class Airport(name: String, city: String, code: String)
+output:
 
-val flightOuterJoinedGraphThree = flightGraph.outerJoinVertices(airportInformation)((_, name, b) => b match {
-  case Some(airportInformation) => Airport(name, airportInformation.city, airportInformation.code)
-  case None => Airport(name, "", "")
-})
-flightOuterJoinedGraphThree.vertices.foreach(println)
+    ﻿(4,(Charles de Gaulle Airport,AirportInformation(Paris,CDG)))
+    (1,(Los Angeles International Airport,AirportInformation(NA,NA)))
+    (3,(Singapore Changi Airport,AirportInformation(Singapore,SIN)))
+    (5,(Toronto Pearson International Airport,AirportInformation(Toronto,YYZ)))
+    (2,(Narita International Airport,AirportInformation(Tokyo,NRT)))
 
+input:
 
-val flightAirport = flightJoinedGraph.vertices
-flightAirport.foreach(println)
+    case class Airport(name: String, city: String, code: String)
 
-flightAirport.mapValues(s => s.split(':')(0)).foreach(println)
+output:
 
-flightAirport.mapValues((vid,s) => s.split(':')(0)).foreach(println)
+    ﻿defined class Airport
+    
+input:
 
+      val flightOuterJoinedGraphThree = flightGraph.outerJoinVertices(airportInformation)((_, name, b) => b match {
+      case Some(airportInformation) => Airport(name, airportInformation.city, airportInformation.code)
+      case None => Airport(name, "", "")
+    })
+    flightOuterJoinedGraphThree.vertices.foreach(println)
+    
+output:
 
-val flightsv = flightGraph.vertices
-flightsv.innerJoin(airportInformation)((vid, name, b) => name + " is in " + b.city).foreach(println)
+    ﻿(4,Airport(Charles de Gaulle Airport,Paris,CDG))
+    (1,Airport(Los Angeles International Airport,,))
+    (3,Airport(Singapore Changi Airport,Singapore,SIN))
+    (5,Airport(Toronto Pearson International Airport,Toronto,YYZ))
+    (2,Airport(Narita International Airport,Tokyo,NRT))
 
-flightsv.leftJoin(airportInformation)((vid, name, b) => b match {
-  case Some(airportInformation) => name + " is in " + airportInformation.city
-  case None => name + "is in an unknown city"
-}).foreach(println)
+input:
 
+    val flightAirport = flightJoinedGraph.vertices
+    flightAirport.foreach(println)
+    
+output:
 
-val flightse = flightGraph.edges
-flightse.foreach(println)
+    ﻿(4,Charles de Gaulle Airport:Paris)
+    (1,Los Angeles International Airport)
+    (3,Singapore Changi Airport:Singapore)
+    (5,Toronto Pearson International Airport:Toronto)
+    (2,Narita International Airport:Tokyo)
 
-val bidirectedGraph = Graph(airports, flightse union flightse.reverse)
+input:
 
-bidirectedGraph.edges.foreach(println)
+    flightAirport.mapValues(s => s.split(':')(0)).foreach(println)
 
+output:
+
+    ﻿(4,Charles de Gaulle Airport)
+    (1,Los Angeles International Airport)
+    (3,Singapore Changi Airport)
+    (5,Toronto Pearson International Airport)
+    (2,Narita International Airport)
+
+input:
+
+    flightAirport.mapValues((vid,s) => s.split(':')(0)).foreach(println)
+
+output:
+
+    ﻿(4,Charles de Gaulle Airport)
+    (1,Los Angeles International Airport)
+    (3,Singapore Changi Airport)
+    (5,Toronto Pearson International Airport)
+    (2,Narita International Airport)
+
+input:
+
+    val flightsv = flightGraph.vertices
+    flightsv.innerJoin(airportInformation)((vid, name, b) => name + " is in " + b.city).foreach(println)
+
+output:
+
+    ﻿(4,Charles de Gaulle Airport is in Paris)
+    (3,Singapore Changi Airport is in Singapore)
+    (5,Toronto Pearson International Airport is in Toronto)
+    (2,Narita International Airport is in Tokyo)
+
+input:
+
+    flightsv.leftJoin(airportInformation)((vid, name, b) => b match {
+      case Some(airportInformation) => name + " is in " + airportInformation.city
+      case None => name + "is in an unknown city"
+    }).foreach(println)
+
+output:
+
+    ﻿(4,Charles de Gaulle Airport is in Paris)
+    (1,Los Angeles International Airportis in an unknown city)
+    (3,Singapore Changi Airport is in Singapore)
+    (5,Toronto Pearson International Airport is in Toronto)
+    (2,Narita International Airport is in Tokyo)
+
+input:
+
+    val flightse = flightGraph.edges
+    flightse.foreach(println)
+
+output:
+
+    ﻿Edge(1,4,AA1123)
+    Edge(1,5,AA6653)
+    Edge(2,4,JL5427)
+    Edge(3,4,SQ4521)
+    Edge(3,5,SQ9338)
+
+input:
+
+    val bidirectedGraph = Graph(airports, flightse union flightse.reverse)
+    bidirectedGraph.edges.foreach(println)
+
+output:
+
+    ﻿Edge(1,4,AA1123)
+    Edge(1,5,AA6653)
+    Edge(2,4,JL5427)
+    Edge(3,4,SQ4521)
+    Edge(3,5,SQ9338)
+    Edge(4,1,AA1123)
+    Edge(4,2,JL5427)
+    Edge(4,3,SQ4521)
+    Edge(5,1,AA6653)
+    Edge(5,3,SQ9338)
+
+    
