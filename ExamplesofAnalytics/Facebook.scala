@@ -22,7 +22,7 @@ import org.apache.spark.SparkContext
 val sc: SparkContext
 
 // Print the first 5 lines of each tab delimited text file.
-Source.fromFile("./data/com-dblp.ungraph.txt").getLines().take(5).foreach(println)
+Source.fromFile("./data/facebook_combined.txt").getLines().take(5).foreach(println)
 
 val facebookGraph = GraphLoader.edgeListFile(sc, "./data/facebook_combined.txt")
 
