@@ -1,11 +1,20 @@
 Hands On: Building A Graph
 ================================
 
-## Run the Spark Shell
+## Start the VM and Download the Datasets
 
+Ensure the Cloudera Quick Start virtual machine is started and have downloaded the dataset, Examples of Analytics from the provided link  
+in the content for this week.
+
+Be sure to copy the ExamplesOfAnalytics.zip file to the Cloudera's Home folder before proceeding.
+
+## Run the Spark Shell
 Open a terminal in the Cloudera Quick Start virtual machine by clicking **Applications**, **System Tools** then **Terminal**.
 
-Once the terminal is open, start the Spark Shell.
+Extract the zip file to the Cloudera Home directory with the default name, Examples of Analytics, and be sure to check inside that directory to list  
+the contents of the EOADATA directory and ensure all files are there.
+
+Now start the Spark Shell.
 
     spark-shell
     
@@ -130,7 +139,7 @@ output:
     ﻿﻿countries: org.apache.spark.rdd.RDD[(org.apache.spark.graphx.VertexId, PlaceNode)] = MapPartitionsRDD[26] at map at <console>:36
 
 Read the comma delimited text file metro_country.tsv into an RDD[Edge[Int]] collection. Remember
-to add 100 to the index of the country.
+to add 100 to the countries' vertex id.
 
 input:
 
@@ -185,7 +194,7 @@ output:
 
     ﻿res9: Array[org.apache.spark.graphx.Edge[Int]] = Array(Edge(1,101,1), Edge(2,102,1), Edge(3,103,1), Edge(4,103,1), Edge(5,104,1))
 
-Find the VertexId(s) of all vertex that have an edge where the source VertexId is 1.
+Filter all of the edges in metrosGraph that have a source vertex Id of 1 and create a map of destination vertex Ids.  
 
 input:
 
@@ -195,7 +204,7 @@ output:
 
     ﻿res10: Array[org.apache.spark.graphx.VertexId] = Array(101)
 
-Find the VertexId(s) of all vertex that have an edge where the destination VertexId is 103.
+Similarly, filter all of the edges in metrosGraph where the destination vertexId is 103 and create a map of all of the source Ids. 
 
 input:
 
@@ -204,29 +213,3 @@ input:
 output:
 
     ﻿res11: Array[org.apache.spark.graphx.VertexId] = Array(3, 4, 7, 24, 34)
-
-Create a helper function that returns a description of the metro to country relationship.
-
-input:
-
-    def showTriplet(t: EdgeTriplet[PlaceNode, Int]): String =
-    "The metropolitan area of " ++ t.srcAttr.name ++ " is in the country of " ++ t.dstAttr.name
-    
-output:
-
-    ﻿showTriplet: (t: org.apache.spark.graphx.EdgeTriplet[PlaceNode,Int])String
-
-Use the showTriplet function to describe the relationship between the metros and the countries
-text form.
-
-input:
-    
-    metrosGraph.triplets.take(5).foreach(showTriplet _ andThen println _)
-    
-output:
-
-    ﻿The metropolitan area of Tokyo is in the country of Japan
-    The metropolitan area of Seoul is in the country of South Korea
-    The metropolitan area of Shanghai is in the country of China
-    The metropolitan area of Guangzhou is in the country of China
-    The metropolitan area of Delhi is in the country of India
