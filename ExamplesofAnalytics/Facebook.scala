@@ -12,7 +12,7 @@ Logger.getLogger("akka").setLevel(Level.ERROR)
 // Hands On: Building A Graph
 //
 import org.apache.spark.graphx._
-//import org.apache.spark.rdd._
+import org.apache.spark.rdd._
 
 import scala.io.Source
 import org.apache.spark.SparkContext
