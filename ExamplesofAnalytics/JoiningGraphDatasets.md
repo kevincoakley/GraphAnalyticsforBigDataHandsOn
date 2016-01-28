@@ -159,6 +159,9 @@ output:
 
 ## Example 2: OuterJoinVertices 
 
+Use outerJoinVertices on flightGraph to join the airportInformation vertices with additional airportInformation such as city and code, to a new graph called flightOuterJoinedGraph using  
+the => operator which is just syntactic sugar for creating instances of functions.
+
 input: 
 
     val flightOuterJoinedGraph = flightGraph.outerJoinVertices(airportInformation)((_,name, airportInformation) => (name, airportInformation))
@@ -172,6 +175,8 @@ output:
     (5,(Toronto Pearson International Airport,Some(AirportInformation(Toronto,YYZ))))
     (2,(Narita International Airport,Some(AirportInformation(Tokyo,NRT))))
 
+Use outerJoinVertices on flightGraph to join the airportInformation vertices with additional airportInformation such as city and code, to a new graph called flightOuterJoinedGraphTwo  
+but this time printing 'NA' if there is no additional information.
 
 input:
 
@@ -186,6 +191,8 @@ output:
     (5,(Toronto Pearson International Airport,AirportInformation(Toronto,YYZ)))
     (2,(Narita International Airport,AirportInformation(Tokyo,NRT)))
 
+Create a case class called Airport to store the information for the name, city, and code of the airport.  
+
 input:
 
     case class Airport(name: String, city: String, code: String)
@@ -194,6 +201,8 @@ output:
 
     ﻿defined class Airport
     
+Print the airportInformation with the name, city, and code within each other.
+
 input:
 
       val flightOuterJoinedGraphThree = flightGraph.outerJoinVertices(airportInformation)((_, name, b) => b match {
@@ -210,6 +219,8 @@ output:
     (5,Airport(Toronto Pearson International Airport,Toronto,YYZ))
     (2,Airport(Narita International Airport,Tokyo,NRT))
 
+Print the airportInformation with only the name and city by setting flightAirport equal to flightJoinedGraph from previous example. 
+
 input:
 
     val flightAirport = flightJoinedGraph.vertices
@@ -223,6 +234,8 @@ output:
     (5,Toronto Pearson International Airport:Toronto)
     (2,Narita International Airport:Tokyo)
 
+Print the airportInformation with only the name of the airport.
+
 input:
 
     flightAirport.mapValues(s => s.split(':')(0)).foreach(println)
@@ -234,6 +247,8 @@ output:
     (3,Singapore Changi Airport)
     (5,Toronto Pearson International Airport)
     (2,Narita International Airport)
+
+Print the airportInformation as the previous example.
 
 input:
 
@@ -247,6 +262,8 @@ output:
     (5,Toronto Pearson International Airport)
     (2,Narita International Airport)
 
+Only print the airportInformation with the airports that have a known city with the "is in" string before the city name.
+
 input:
 
     val flightsv = flightGraph.vertices
@@ -258,6 +275,8 @@ output:
     (3,Singapore Changi Airport is in Singapore)
     (5,Toronto Pearson International Airport is in Toronto)
     (2,Narita International Airport is in Tokyo)
+
+Print the airportInformation of all airports with known or not known cities with the "is in" string before the city name.
 
 input:
 
@@ -274,6 +293,8 @@ output:
     (5,Toronto Pearson International Airport is in Toronto)
     (2,Narita International Airport is in Tokyo)
 
+Print the edges in order. 
+
 input:
 
     val flightse = flightGraph.edges
@@ -286,6 +307,8 @@ output:
     Edge(2,4,JL5427)
     Edge(3,4,SQ4521)
     Edge(3,5,SQ9338)
+
+Print the edges in order and then in reverse order.
 
 input:
 
