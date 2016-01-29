@@ -1,11 +1,23 @@
 Hands On: Plot the Degree Histogram
 ===================================
 
-import breeze.linalg._
-import breeze.plot._
+1. Import the BreezeViz library
+2. Define a function to calculate the degree histogram
+3. Calculate the probability distribution for the degree histogram
+4. Graph the results
 
-Define a function to create a histogram of the degrees. See metrosGraph.degrees... from above.
-Only include countries!
+
+## Import the BreezeViz library
+
+
+    import breeze.linalg._
+    import breeze.plot._
+
+
+## Define a function to calculate the degree histogram
+
+Define a function to create a histogram of the degrees. The function is nearly identical to how the
+histogram was computed in the previous hands on exercise. Remember to only include countries!
 
 input:
     
@@ -19,6 +31,9 @@ input:
 output:
 
     ﻿degreeHistogram: (net: org.apache.spark.graphx.Graph[PlaceNode,Int])Array[(Int, Int)]
+
+
+## Calculate the probability distribution for the degree histogram   
    
 Get the probability distribution (degree distribution) from the degree histogram by normalizing
 the node degrees by the total number of nodes, so that the degree probabilities add up to one.
@@ -40,7 +55,10 @@ output:
     ﻿metroDegreeDistribution: Array[(Int, Double)] = Array((1,0.6428571428571429), (2,0.14285714285714285), 
     (3,0.07142857142857142), (5,0.07142857142857142), (9,0.03571428571428571), (14,0.03571428571428571))
 
-Plot degree distribution and the histogram of node degrees.
+
+## Graph the results
+
+Plot degree distribution and the histogram of vertex degrees.
 
 input:
 
