@@ -1,6 +1,14 @@
 Hands On: Building A Degree Histogram
 =====================================
 
+1. Count the number of vertices and edges
+2. Define a min and max function for Spark’s reduce method
+3. Compute min and max degrees 
+4. Compute the histogram data of the degree of connectedness 
+
+
+## Count the number of vertices and edges
+
 Print the number of links.
 
 input:
@@ -20,6 +28,8 @@ input:
 output:
 
     ﻿res14: Long = 93
+
+## Define a min and max function for Spark’s reduce method
 
 Define a min and max function.
 
@@ -43,6 +53,9 @@ output:
 
     ﻿min: (a: (org.apache.spark.graphx.VertexId, Int), b: (org.apache.spark.graphx.VertexId, Int))(org.apache.spark.graphx.VertexId, Int)
     
+    
+## Compute min and max degrees 
+
 Find which which VertexId and the edge count of the vertex with the most out edges. (This
 can be any vertex because all vertices have one out edge.)
 
@@ -111,6 +124,9 @@ input:
 output:
 
     res21: (org.apache.spark.graphx.VertexId, Int) = (34,1)
+
+
+## Compute the histogram data of the degree of connectedness 
 
 Print the histogram data of the degrees for countries only.
 
