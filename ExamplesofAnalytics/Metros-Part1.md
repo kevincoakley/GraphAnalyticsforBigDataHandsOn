@@ -1,28 +1,48 @@
 Hands On: Building A Graph
 ================================
 
-## Start the VM and Download the Datasets
+1. Start the Cloudera VM and Upload the datasets to HDFS
+2. Import the GraphX libraries
+3. Import the Vertices 
+4. Import the Edges
+5. Create a Graph
+6. Use Spark’s filter method to return Vertices in the graph
 
-Ensure the Cloudera Quick Start virtual machine is started and have downloaded the dataset, Examples of Analytics from the provided link  
-in the content for this week.
 
-Be sure to copy the ExamplesOfAnalytics.zip file to the Cloudera's Home folder before proceeding.
+## Start the Cloudera VM and Upload the datasets to HDFS
 
-## Run the Spark Shell
+Ensure the Cloudera Quick Start virtual machine is started and that you have downloaded 
+ExamplesOfAnalytics.zip from the provided link in the content section for this week.
+
+
+Copy the ExamplesOfAnalytics.zip file to the Cloudera's Home folder before proceeding.
+
+
 Open a terminal in the Cloudera Quick Start virtual machine by clicking **Applications**, **System Tools** then **Terminal**.
 
-Extract the zip file to the Cloudera Home directory with the default name, Examples of Analytics, and be sure to check inside that directory to list  
-the contents of the EOADATA directory and ensure all files are there.
 
-Now start the Spark Shell.
+Type the following command in the Terminal window to extract the zip file to the Cloudera 
+Home directory.
+ 
+ 
+    unzip ExamplesOfAnalytics.zip
 
-    spark-shell
+
+Type the following command in the Terminal window to go into the ExamplesOfAnalytics directory and 
+start the Spark Shell will all of the libraries needed to complete the hands on exercises.
+
+
+    cd ExamplesOfAnalytics
+    spark-shell --jars lib/gs-core-1.2.jar,lib/gs-ui-1.2.jar,lib/jcommon-1.0.16.jar,lib/jfreechart-1.0.13.jar,lib/breeze_2.10-0.9.jar,lib/breeze-viz_2.10-0.9.jar,lib/pherd-1.0.jar
+
     
 It may take several seconds for the Spark Shell to start. Be patient and wait for the **scala>** prompt.
 
-## Setup the Datasets
 
-Set log level to error, suppress info and warn messages
+## Import the GraphX libraries
+
+Set log level to error, suppress info and warn messages.
+
 
     import org.apache.log4j.Logger
     import org.apache.log4j.Level
@@ -30,14 +50,21 @@ Set log level to error, suppress info and warn messages
     Logger.getLogger("org").setLevel(Level.ERROR)
     Logger.getLogger("akka").setLevel(Level.ERROR)
     
-Import the GraphX and RDD libraries.
+
+Import the Spark's GraphX and RDD libraries along with Scala's source library.
+
 
     import org.apache.spark.graphx._
     import org.apache.spark.rdd._
 
     import scala.io.Source
 
-Print the first 5 lines of each comma delimited text file.
+
+## Import the Vertices 
+
+
+Before importing any datasets, let view what the files contain. Print the first 5 lines of each 
+comma delimited text file.
 
 input:
 
