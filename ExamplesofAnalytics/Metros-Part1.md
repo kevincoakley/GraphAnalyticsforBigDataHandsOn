@@ -165,6 +165,8 @@ output:
     
     ﻿﻿countries: org.apache.spark.rdd.RDD[(org.apache.spark.graphx.VertexId, PlaceNode)] = MapPartitionsRDD[26] at map at <console>:36
 
+## Import the Vertices 
+
 Read the comma delimited text file metro_country.tsv into an RDD[Edge[Int]] collection. Remember
 to add 100 to the countries' vertex id.
 
@@ -181,6 +183,8 @@ input:
 output:
 
     ﻿mclinks: org.apache.spark.rdd.RDD[org.apache.spark.graphx.Edge[Int]] = MapPartitionsRDD[30] at map at <console>:33
+    
+## Create a Graph
 
 Concatenate the two sets of nodes into a single RDD.
 
@@ -220,6 +224,8 @@ input:
 output:
 
     ﻿res9: Array[org.apache.spark.graphx.Edge[Int]] = Array(Edge(1,101,1), Edge(2,102,1), Edge(3,103,1), Edge(4,103,1), Edge(5,104,1))
+
+## Use Spark’s filter method to return Vertices in the graph
 
 Filter all of the edges in metrosGraph that have a source vertex Id of 1 and create a map of destination vertex Ids.  
 
