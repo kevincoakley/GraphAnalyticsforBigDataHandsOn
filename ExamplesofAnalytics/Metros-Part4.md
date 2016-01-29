@@ -1,6 +1,15 @@
 Hands On: Network Connectedness and Clustering Components
 =========================================================
 
+1. Create a new graph by adding the Continents dataset  
+2. Import the GraphStream library
+3. Import countriesGraph into a GraphStream SingleGraph
+4. Visualize countriesGraph
+5. Visualize Facebook graph
+
+
+## Create a new graph by adding the Continents dataset  
+
 To make the graph more interesting, create a new graph and add the continents.
 
 input:
@@ -91,9 +100,15 @@ output:
 
     ﻿countriesGraph: org.apache.spark.graphx.Graph[PlaceNode,Int] = org.apache.spark.graphx.impl.GraphImpl@c5afb2f
 
-Import the following:
+## Import the GraphStream library
+
+Import the GraphStream library
 
     import org.graphstream.graph.implementations._
+
+
+Create a new instance of GraphStream's SingleGraph class using the countriesGraph.
+
 
     val graph: SingleGraph = new SingleGraph("countriesGraph")
 
@@ -125,10 +140,8 @@ Load the graphX edges into GraphStream edges.
       graph.addEdge(x.toString ++ y.toString, x.toString, y.toString, true).asInstanceOf[AbstractEdge]
     }
 
-Display the graph. 
-metros: small blue dots. 
-countries: medium red dots. 
-continents: large green dots. 
+Display the graph. The metros are the small blue dots, the countries are the medium red dots and the
+continents are the large green dots. 
     
 input:    
 
