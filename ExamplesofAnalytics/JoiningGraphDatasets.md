@@ -1,6 +1,12 @@
 Hands On: Joining Graph Datasets
 ================================
 
+1. Create a new dataset
+2. Join two datasets with JoinVertices
+3. Join two datasets with outerJoinVertices
+4. Create a new return type for the joined vertices
+
+
 ## Run the Spark Shell
 
 Open a terminal in the Cloudera Quick Start virtual machine by clicking **Applications**, **System Tools** then **Terminal**.
@@ -11,7 +17,7 @@ Once the terminal is open, start the Spark Shell.
 
 It may take several seconds for the Spark Shell to start. Be patient and wait for the **scala>** prompt.
 
-## Setup the Datasets Used for this Example
+## Create a new dataset
 
 Set log level to error in order to suppress the info and warn messages so the output is easier to read.
 
@@ -124,7 +130,7 @@ output:
 
     airportInformation: org.apache.spark.rdd.RDD[(org.apache.spark.graphx.VertexId, AirportInformation)] = ParallelCollectionRDD[19] at parallelize at <console>:31
 
-## Example 1: joinVertices
+## Join two datasets with JoinVertices
 
 In this first example we are going to use joinVertices to join the airport information **flightGraph** graph. 
 
@@ -157,7 +163,7 @@ output:
     (2,Narita International Airport:Tokyo)
 
 
-## Example 2: OuterJoinVertices 
+## Join two datasets with outerJoinVertices
 
 Use outerJoinVertices on flightGraph to join the airportInformation vertices with additional airportInformation such as city and code, to a new graph called flightOuterJoinedGraph using  
 the => operator which is just syntactic sugar for creating instances of functions.
@@ -191,6 +197,8 @@ output:
     (5,(Toronto Pearson International Airport,AirportInformation(Toronto,YYZ)))
     (2,(Narita International Airport,AirportInformation(Tokyo,NRT)))
 
+## Create a new return type for the joined vertices
+
 Create a case class called Airport to store the information for the name, city, and code of the airport.  
 
 input:
@@ -218,114 +226,3 @@ output:
     (3,Airport(Singapore Changi Airport,Singapore,SIN))
     (5,Airport(Toronto Pearson International Airport,Toronto,YYZ))
     (2,Airport(Narita International Airport,Tokyo,NRT))
-
-Print the airportInformation with only the name and city by setting flightAirport equal to flightJoinedGraph from previous example. 
-
-input:
-
-    val flightAirport = flightJoinedGraph.vertices
-    flightAirport.foreach(println)
-    
-output:
-
-    ﻿(4,Charles de Gaulle Airport:Paris)
-    (1,Los Angeles International Airport)
-    (3,Singapore Changi Airport:Singapore)
-    (5,Toronto Pearson International Airport:Toronto)
-    (2,Narita International Airport:Tokyo)
-
-Print the airportInformation with only the name of the airport.
-
-input:
-
-    flightAirport.mapValues(s => s.split(':')(0)).foreach(println)
-
-output:
-
-    ﻿(4,Charles de Gaulle Airport)
-    (1,Los Angeles International Airport)
-    (3,Singapore Changi Airport)
-    (5,Toronto Pearson International Airport)
-    (2,Narita International Airport)
-
-Print the airportInformation as the previous example.
-
-input:
-
-    flightAirport.mapValues((vid,s) => s.split(':')(0)).foreach(println)
-
-output:
-
-    ﻿(4,Charles de Gaulle Airport)
-    (1,Los Angeles International Airport)
-    (3,Singapore Changi Airport)
-    (5,Toronto Pearson International Airport)
-    (2,Narita International Airport)
-
-Only print the airportInformation with the airports that have a known city with the "is in" string before the city name.
-
-input:
-
-    val flightsv = flightGraph.vertices
-    flightsv.innerJoin(airportInformation)((vid, name, b) => name + " is in " + b.city).foreach(println)
-
-output:
-
-    ﻿(4,Charles de Gaulle Airport is in Paris)
-    (3,Singapore Changi Airport is in Singapore)
-    (5,Toronto Pearson International Airport is in Toronto)
-    (2,Narita International Airport is in Tokyo)
-
-Print the airportInformation of all airports with known or not known cities with the "is in" string before the city name.
-
-input:
-
-    flightsv.leftJoin(airportInformation)((vid, name, b) => b match {
-      case Some(airportInformation) => name + " is in " + airportInformation.city
-      case None => name + "is in an unknown city"
-    }).foreach(println)
-
-output:
-
-    ﻿(4,Charles de Gaulle Airport is in Paris)
-    (1,Los Angeles International Airportis in an unknown city)
-    (3,Singapore Changi Airport is in Singapore)
-    (5,Toronto Pearson International Airport is in Toronto)
-    (2,Narita International Airport is in Tokyo)
-
-Print the edges in order. 
-
-input:
-
-    val flightse = flightGraph.edges
-    flightse.foreach(println)
-
-output:
-
-    ﻿Edge(1,4,AA1123)
-    Edge(1,5,AA6653)
-    Edge(2,4,JL5427)
-    Edge(3,4,SQ4521)
-    Edge(3,5,SQ9338)
-
-Print the edges in order and then in reverse order.
-
-input:
-
-    val bidirectedGraph = Graph(airports, flightse union flightse.reverse)
-    bidirectedGraph.edges.foreach(println)
-
-output:
-
-    ﻿Edge(1,4,AA1123)
-    Edge(1,5,AA6653)
-    Edge(2,4,JL5427)
-    Edge(3,4,SQ4521)
-    Edge(3,5,SQ9338)
-    Edge(4,1,AA1123)
-    Edge(4,2,JL5427)
-    Edge(4,3,SQ4521)
-    Edge(5,1,AA6653)
-    Edge(5,3,SQ9338)
-
-    
