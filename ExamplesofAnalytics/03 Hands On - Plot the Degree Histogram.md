@@ -82,4 +82,4 @@ input:
 
 output:
     
-    INSERT GRAPH HERE
+![Metros Histogram](https://raw.githubusercontent.com/kevincoakley/GraphAnalyticsforBigDataHandsOn/master/ExamplesofAnalytics/output/Metros/Plot%20the%20Degree%20Histogram.png)    

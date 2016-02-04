@@ -149,5 +149,5 @@ input:
     
 output:
 
-    INSERT GRAPH HERE
+![Metro Graph](https://raw.githubusercontent.com/kevincoakley/GraphAnalyticsforBigDataHandsOn/master/ExamplesofAnalytics/output/Metros/Network%20Connectedness%20and%20Clustering%20Components.png)
     
