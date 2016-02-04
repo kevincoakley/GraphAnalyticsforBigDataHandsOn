@@ -150,4 +150,27 @@ input:
 output:
 
 ![Metro Graph](https://raw.githubusercontent.com/kevincoakley/GraphAnalyticsforBigDataHandsOn/master/ExamplesofAnalytics/output/Metros/Network%20Connectedness%20and%20Clustering%20Components.png)
+
+
+## Visualize Facebook graph
     
+Open a terminal in the Cloudera Quick Start virtual machine by clicking **Applications**, **System Tools** then **Terminal**.
+
+
+Type the following command in the Terminal window to go into the ExamplesOfAnalytics directory. 
+
+
+
+    cd ExamplesOfAnalytics
+    
+
+Run the spark-shell with the Facebook.scala file to visualize the Facebook dataset.
+    
+    
+    spark-shell --jars lib/gs-core-1.2.jar,lib/gs-ui-1.2.jar,lib/jcommon-1.0.16.jar,lib/jfreechart-1.0.13.jar,lib/breeze_2.10-0.9.jar,lib/breeze-viz_2.10-0.9.jar,lib/pherd-1.0.jar -i Facebook.scala 
+
+
+output:
+   
+
+![Facebook Graph](https://raw.githubusercontent.com/kevincoakley/GraphAnalyticsforBigDataHandsOn/master/ExamplesofAnalytics/output/Facebook/Network%20Connectedness%20and%20Clustering%20Components.png)
