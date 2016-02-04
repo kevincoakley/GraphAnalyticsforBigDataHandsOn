@@ -28,11 +28,22 @@ Home directory.
     unzip ExamplesOfAnalytics.zip
 
 
-Type the following command in the Terminal window to go into the ExamplesOfAnalytics directory and 
-start the Spark Shell will all of the libraries needed to complete the hands on exercises.
+Type the following command in the Terminal window to go into the ExamplesOfAnalytics directory. 
+
 
 
     cd ExamplesOfAnalytics
+
+
+Use the hdfs command to upload the datasets in the EOADATA directory to HDFS.
+ 
+    
+    hdfs dfs -put EOADATA
+    
+
+Start the Spark Shell will all of the libraries needed to complete the hands on exercises.
+
+    
     spark-shell --jars lib/gs-core-1.2.jar,lib/gs-ui-1.2.jar,lib/jcommon-1.0.16.jar,lib/jfreechart-1.0.13.jar,lib/breeze_2.10-0.9.jar,lib/breeze-viz_2.10-0.9.jar,lib/pherd-1.0.jar
 
     
